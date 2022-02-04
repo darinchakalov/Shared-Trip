@@ -68,10 +68,21 @@ const bookSeat = async (req, res) => {
 	}
 };
 
+const renderEditPage = async (req, res) => {
+	try {
+		let trip = await tripServices.getOne(req.params.id);
+		res.render("edit", trip);
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("edit");
+	}
+};
+
 router.get("/shared-trips", renderSharedTripsPage);
 router.get("/offer", renderOfferPage);
 router.post("/offer", createOffer);
 router.get("/details/:id", renderDetailsPage);
 router.get("/book/:id", bookSeat);
+router.get("/edit/:id", renderEditPage);
 
 module.exports = router;
