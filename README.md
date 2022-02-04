@@ -29,3 +29,4 @@ The application supports the following actions:
 -   edit and delete options for creator of the trip
 -   option to book a trip for logged in users who are not creator of the trip
 -   information about the users who have booked the trip and available seats
+-   profile page shows count and details about user created trips
