@@ -22,31 +22,9 @@ const book = async function (tripId, userId) {
 	}
 };
 
-const edit = function (
-	tripId,
-	startPoint,
-	endPoint,
-	date,
-	time,
-	imageUrl,
-	carBrand,
-	seats,
-	price,
-	description,
-	creator
-) {
-	return Trip.findByIdAndUpdate(tripId, {
-		startPoint,
-		endPoint,
-		date,
-		time,
-		imageUrl,
-		carBrand,
-		seats,
-		price,
-		description,
-		creator,
-	});
+const edit = function (tripId, trip) {
+	console.log(trip);
+	return Trip.findByIdAndUpdate(tripId, trip);
 };
 
 const tripServices = {
