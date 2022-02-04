@@ -5,12 +5,17 @@ const create = function (startPoint, endPoint, date, time, imageUrl, carBrand, s
 };
 
 const getAll = function () {
-	return Trip.find();
+	return Trip.find().lean();
+};
+
+const getOne = function (id) {
+	return Trip.findById(id);
 };
 
 const tripServices = {
 	create,
 	getAll,
+	getOne,
 };
 
 module.exports = tripServices;

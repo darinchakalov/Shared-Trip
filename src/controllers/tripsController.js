@@ -34,13 +34,27 @@ const createOffer = async (req, res) => {
 		);
 		res.redirect("/shared-trips");
 	} catch (error) {
-		res.locals.error = error;
+		res.locals.error = error.message;
 		res.render("offer");
+	}
+};
+
+const renderDetailsPage = async (req, res) => {
+	try {
+		let tripData = await tripServices.getOne(req.params.id);
+		let trip = tripData.toObject();
+		let isCreator = trip.creator == res.user.id;
+		let availableSeats = tripData.availableSeats();
+		res.render("details", { ...trip, isCreator, availableSeats });
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("details");
 	}
 };
 
 router.get("/shared-trips", renderSharedTripsPage);
 router.get("/offer", renderOfferPage);
 router.post("/offer", createOffer);
+router.get("/details/:id", renderDetailsPage);
 
 module.exports = router;
