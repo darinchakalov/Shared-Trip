@@ -49,10 +49,6 @@ const tripSchema = new mongoose.Schema({
 	],
 });
 
-// tripSchema.methods.availableSeats = function () {
-// 	return this.seats - this.buddies.length;
-// };
-
 tripSchema.method("availableSeats", function () {
 	return this.seats - this.buddies.length;
 });

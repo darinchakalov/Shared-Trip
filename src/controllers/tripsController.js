@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const tripServices = require("../services/tripServices.js");
+const authServices = require("../services/authServices.js");
 
 const renderSharedTripsPage = async (req, res) => {
 	try {
@@ -46,7 +47,10 @@ const renderDetailsPage = async (req, res) => {
 		let isCreator = trip.creator == res.user?.id;
 		let availableSeats = tripData.availableSeats();
 		let hasBooked = tripData.buddies.some((x) => x._id == res.user?.id);
-		res.render("details", { ...trip, isCreator, availableSeats, hasBooked });
+		const driver = await authServices.getUser(trip.creator);
+		let allBuddies = trip.buddies.map((x) => x.email);
+		console.log(allBuddies);
+		res.render("details", { ...trip, isCreator, availableSeats, hasBooked, driver, allBuddies });
 	} catch (error) {
 		res.locals.error = error.message;
 		res.render("details");
@@ -54,9 +58,10 @@ const renderDetailsPage = async (req, res) => {
 };
 
 const bookSeat = async (req, res) => {
+	console.log("yes");
 	try {
-		await tripServices.bookSeat(req.params.id, res.user.id);
-		res.redirect(301, `/details/${req.params.id}`);
+		await tripServices.book(req.params.id, res.user.id);
+		res.redirect(`/details/${req.params.id}`);
 	} catch (error) {
 		res.locals.error = error.message;
 		res.render("details");

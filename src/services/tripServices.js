@@ -9,12 +9,12 @@ const getAll = function () {
 };
 
 const getOne = function (id) {
-	return Trip.findById(id);
+	return Trip.findById(id).populate("buddies");
 };
 
-const bookSeat = async function (tripId, userId) {
+const book = async function (tripId, userId) {
 	try {
-		let trip = await Trip.findById(tripId);
+		let trip = await Trip.findById(tripId).lean();
 		trip.buddies.push(userId);
 		return trip.save();
 	} catch (error) {
@@ -26,7 +26,7 @@ const tripServices = {
 	create,
 	getAll,
 	getOne,
-	bookSeat,
+	book,
 };
 
 module.exports = tripServices;

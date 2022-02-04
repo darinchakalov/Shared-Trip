@@ -15,6 +15,12 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		enum: ["male", "female"],
 	},
+	trips: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Trip",
+		},
+	],
 });
 
 userSchema.pre("save", function (next) {
