@@ -9,9 +9,9 @@ const renderLoginPage = (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-	const { username, password } = req.body;
+	const { email, password } = req.body;
 	try {
-		let user = await authServices.login(username, password);
+		let user = await authServices.login(email, password);
 
 		let token = await authServices.createToken(user);
 

@@ -4,19 +4,18 @@ const jwt = require("jsonwebtoken");
 const { SECRET } = require("../config/constants.js");
 
 const register = function (email, password, gender) {
-	console.log("here");
 	return User.create({ email, password, gender });
 };
 
-const login = async function (username, password) {
+const login = async function (email, password) {
 	try {
-		let user = await User.findOne({ username: username });
+		let user = await User.findOne({ email: email });
 		let isPasswordCorrect = await user.confirmPassword(password);
 		if (isPasswordCorrect) {
 			return user;
 		}
 	} catch (error) {
-		throw new Error("Username or password are incorrect", error);
+		throw new Error("Email or password are incorrect", error);
 	}
 };
 
@@ -27,7 +26,7 @@ const userExists = function (email) {
 const createToken = function (user) {
 	const payload = {
 		id: user._id,
-		username: user.username,
+		email: user.email,
 	};
 	return jwt.sign(payload, SECRET);
 };
