@@ -30,6 +30,10 @@ const del = function (tripId) {
 	return Trip.findByIdAndDelete(tripId);
 };
 
+const getUserTrips = function (userId) {
+	return Trip.find({ creator: userId }).lean();
+};
+
 const tripServices = {
 	create,
 	getAll,
@@ -37,6 +41,7 @@ const tripServices = {
 	book,
 	edit,
 	del,
+	getUserTrips,
 };
 
 module.exports = tripServices;
