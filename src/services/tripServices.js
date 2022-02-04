@@ -23,8 +23,11 @@ const book = async function (tripId, userId) {
 };
 
 const edit = function (tripId, trip) {
-	console.log(trip);
 	return Trip.findByIdAndUpdate(tripId, trip);
+};
+
+const del = function (tripId) {
+	return Trip.findByIdAndDelete(tripId);
 };
 
 const tripServices = {
@@ -33,6 +36,7 @@ const tripServices = {
 	getOne,
 	book,
 	edit,
+	del,
 };
 
 module.exports = tripServices;

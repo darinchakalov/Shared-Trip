@@ -89,6 +89,16 @@ const editTrip = async (req, res) => {
 	}
 };
 
+const deleteTrip = async (req, res) => {
+	try {
+		await tripServices.del(req.params.id);
+		res.redirect("/shared-trips");
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("edit");
+	}
+};
+
 router.get("/shared-trips", renderSharedTripsPage);
 router.get("/offer", renderOfferPage);
 router.post("/offer", createOffer);
@@ -96,5 +106,6 @@ router.get("/details/:id", renderDetailsPage);
 router.get("/book/:id", bookSeat);
 router.get("/edit/:id", renderEditPage);
 router.post("/edit/:id", editTrip);
+router.get("/delete/:id", deleteTrip);
 
 module.exports = router;
