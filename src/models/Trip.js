@@ -54,7 +54,7 @@ const tripSchema = new mongoose.Schema({
 // };
 
 tripSchema.method("availableSeats", function () {
-	return this.seats;
+	return this.seats - this.buddies.length;
 });
 
 const Trip = mongoose.model("Trip", tripSchema);

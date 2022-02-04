@@ -43,9 +43,20 @@ const renderDetailsPage = async (req, res) => {
 	try {
 		let tripData = await tripServices.getOne(req.params.id);
 		let trip = tripData.toObject();
-		let isCreator = trip.creator == res.user.id;
+		let isCreator = trip.creator == res.user?.id;
 		let availableSeats = tripData.availableSeats();
-		res.render("details", { ...trip, isCreator, availableSeats });
+		let hasBooked = tripData.buddies.some((x) => x._id == res.user?.id);
+		res.render("details", { ...trip, isCreator, availableSeats, hasBooked });
+	} catch (error) {
+		res.locals.error = error.message;
+		res.render("details");
+	}
+};
+
+const bookSeat = async (req, res) => {
+	try {
+		await tripServices.bookSeat(req.params.id, res.user.id);
+		res.redirect(301, `/details/${req.params.id}`);
 	} catch (error) {
 		res.locals.error = error.message;
 		res.render("details");
@@ -56,5 +67,6 @@ router.get("/shared-trips", renderSharedTripsPage);
 router.get("/offer", renderOfferPage);
 router.post("/offer", createOffer);
 router.get("/details/:id", renderDetailsPage);
+router.get("/book/:id", bookSeat);
 
 module.exports = router;
