@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 router.get("*", (req, res) => {
-	res.send("404");
+	res.render("404");
 });
 
 module.exports = router;
