@@ -23,7 +23,7 @@ exports.isAuth = (req, res, next) => {
 	if (res.user) {
 		next();
 	} else {
-		res.redirect("/");
+		res.redirect("/login");
 	}
 };
 

@@ -3,6 +3,8 @@ const router = require("express").Router();
 const tripServices = require("../services/tripServices.js");
 const authServices = require("../services/authServices.js");
 
+const { isAuth, isGuest } = require("../middlewares/authMiddleware.js");
+
 const renderSharedTripsPage = async (req, res) => {
 	try {
 		let trips = await tripServices.getAll();
@@ -57,7 +59,6 @@ const renderDetailsPage = async (req, res) => {
 };
 
 const bookSeat = async (req, res) => {
-	console.log("yes");
 	try {
 		await tripServices.book(req.params.id, res.user.id);
 		res.redirect(`/details/${req.params.id}`);
@@ -100,12 +101,12 @@ const deleteTrip = async (req, res) => {
 };
 
 router.get("/shared-trips", renderSharedTripsPage);
-router.get("/offer", renderOfferPage);
-router.post("/offer", createOffer);
+router.get("/offer", isAuth, renderOfferPage);
+router.post("/offer", isAuth, createOffer);
 router.get("/details/:id", renderDetailsPage);
-router.get("/book/:id", bookSeat);
-router.get("/edit/:id", renderEditPage);
-router.post("/edit/:id", editTrip);
-router.get("/delete/:id", deleteTrip);
+router.get("/book/:id", isAuth, bookSeat);
+router.get("/edit/:id", isAuth, renderEditPage);
+router.post("/edit/:id", isAuth, editTrip);
+router.get("/delete/:id", isAuth, deleteTrip);
 
 module.exports = router;

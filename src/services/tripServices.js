@@ -14,7 +14,7 @@ const getOne = function (id) {
 
 const book = async function (tripId, userId) {
 	try {
-		let trip = await Trip.findById(tripId).lean();
+		let trip = await Trip.findById(tripId);
 		trip.buddies.push(userId);
 		return trip.save();
 	} catch (error) {
